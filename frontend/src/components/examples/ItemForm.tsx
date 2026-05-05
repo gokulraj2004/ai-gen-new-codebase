@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import type { Item, ItemCreateRequest } from '../../types';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
-import { validateRequired } from '../../utils/validators';
 
 interface ItemFormProps {
   item?: Item;
@@ -25,19 +24,24 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
     e.preventDefault();
     setError('');
 
-    if (!validateRequired(title)) {
-      setError('Title is required');
+    if (!title.trim()) {
+      setError('Title is required.');
       return;
     }
 
-    const tagNames = tagInput
-      .split(',')
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
-
     setIsLoading(true);
+
     try {
-      await onSubmit({ title, description, tag_names: tagNames });
+      const tags = tagInput
+        .split(',')
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0);
+
+      await onSubmit({
+        title: title.trim(),
+        description: description.trim(),
+        tags,
+      });
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: { detail?: string } } };
       setError(axiosError.response?.data?.detail || 'Failed to save item.');
@@ -55,17 +59,17 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
         label="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Enter item title"
         required
+        placeholder="Enter item title"
       />
       <div>
         <label className="block text-sm font-medium text-gray-700">Description</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Enter item description"
           rows={4}
           className="input-field mt-1"
+          placeholder="Enter item description"
         />
       </div>
       <Input

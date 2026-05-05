@@ -1,7 +1,6 @@
 import os
-import warnings
+import sys
 from pydantic_settings import BaseSettings
-from pydantic import field_validator
 from typing import List
 
 
@@ -9,7 +8,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "New Codebase"
     APP_ENV: str = "development"
     DEBUG: bool = True
-    SECRET_KEY: str = "dev-secret-key-change-in-production"
+    SECRET_KEY: str = ""
 
     BACKEND_HOST: str = "0.0.0.0"
     BACKEND_PORT: int = 8000
@@ -18,71 +17,15 @@ class Settings(BaseSettings):
     DB_PORT: int = 5432
     DB_NAME: str = "new_codebase"
     DB_USER: str = "postgres"
-    DB_PASSWORD: str = "postgres"
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@db:5432/new_codebase"
+    DB_PASSWORD: str = ""
+    DATABASE_URL: str = ""
 
-    JWT_SECRET_KEY: str = "dev-jwt-secret-key-change-in-production"
+    JWT_SECRET_KEY: str = ""
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     JWT_ALGORITHM: str = "HS256"
 
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
-
-    @field_validator("SECRET_KEY")
-    @classmethod
-    def secret_key_must_be_set(cls, v: str) -> str:
-        if not v or v.strip() == "":
-            raise ValueError(
-                "SECRET_KEY must be set to a secure random value."
-            )
-        if v.startswith("<") and v.endswith(">"):
-            warnings.warn(
-                "SECRET_KEY appears to be a placeholder. "
-                "Please set it to a secure random value for production.",
-                stacklevel=2,
-            )
-        return v
-
-    @field_validator("JWT_SECRET_KEY")
-    @classmethod
-    def jwt_secret_key_must_be_set(cls, v: str) -> str:
-        if not v or v.strip() == "":
-            raise ValueError(
-                "JWT_SECRET_KEY must be set to a secure random value."
-            )
-        if v.startswith("<") and v.endswith(">"):
-            warnings.warn(
-                "JWT_SECRET_KEY appears to be a placeholder. "
-                "Please set it to a secure random value for production.",
-                stacklevel=2,
-            )
-        return v
-
-    @field_validator("DB_PASSWORD")
-    @classmethod
-    def db_password_must_be_set(cls, v: str) -> str:
-        if not v or v.strip() == "":
-            raise ValueError("DB_PASSWORD must be set via environment variable.")
-        if v.startswith("<") and v.endswith(">"):
-            warnings.warn(
-                "DB_PASSWORD appears to be a placeholder. "
-                "Please set it to a real password for production.",
-                stacklevel=2,
-            )
-        return v
-
-    @field_validator("DATABASE_URL")
-    @classmethod
-    def database_url_must_be_set(cls, v: str) -> str:
-        if not v or v.strip() == "":
-            raise ValueError("DATABASE_URL must be set via environment variable.")
-        if "<" in v and ">" in v:
-            warnings.warn(
-                "DATABASE_URL appears to contain placeholder values. "
-                "Please set it to a real connection string for production.",
-                stacklevel=2,
-            )
-        return v
 
     @property
     def CORS_ORIGINS_LIST(self) -> List[str]:
@@ -93,4 +36,52 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 
-settings = Settings()
+def _build_settings() -> Settings:
+    """Build and validate settings, returning a properly configured instance."""
+    base_settings = Settings()
+
+    errors = []
+    overrides = {}
+
+    if not base_settings.SECRET_KEY or base_settings.SECRET_KEY == "change-me-to-a-random-secret-key":
+        errors.append("SECRET_KEY must be set to a secure random value via environment variable.")
+        if not base_settings.SECRET_KEY:
+            overrides["SECRET_KEY"] = "dev-only-secret-key-not-for-production"
+
+    if not base_settings.JWT_SECRET_KEY or base_settings.JWT_SECRET_KEY == "change-me-to-a-random-jwt-secret":
+        errors.append("JWT_SECRET_KEY must be set to a secure random value via environment variable.")
+        if not base_settings.JWT_SECRET_KEY:
+            overrides["JWT_SECRET_KEY"] = "dev-only-jwt-secret-not-for-production"
+
+    if not base_settings.DATABASE_URL:
+        errors.append("DATABASE_URL must be set via environment variable.")
+        db_password = base_settings.DB_PASSWORD or "postgres"
+        overrides["DATABASE_URL"] = f"postgresql+asyncpg://{base_settings.DB_USER}:{db_password}@{base_settings.DB_HOST}:{base_settings.DB_PORT}/{base_settings.DB_NAME}"
+
+    if not base_settings.DB_PASSWORD or base_settings.DB_PASSWORD == "postgres":
+        if base_settings.APP_ENV == "production":
+            errors.append("DB_PASSWORD must be changed from default in production.")
+        if not base_settings.DB_PASSWORD:
+            overrides["DB_PASSWORD"] = "postgres"
+
+    if errors and base_settings.APP_ENV == "production":
+        for err in errors:
+            print(f"CONFIGURATION ERROR: {err}", file=sys.stderr)
+        sys.exit(1)
+    elif errors and base_settings.APP_ENV != "production":
+        for err in errors:
+            print(f"WARNING: {err}", file=sys.stderr)
+
+    # If we have overrides, create a new settings instance with them applied
+    if overrides:
+        # Get all current values and apply overrides
+        env_values = {}
+        for field_name in Settings.model_fields:
+            env_values[field_name] = getattr(base_settings, field_name)
+        env_values.update(overrides)
+        return Settings(**env_values)
+
+    return base_settings
+
+
+settings = _build_settings()

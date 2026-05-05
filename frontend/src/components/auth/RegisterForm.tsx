@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
-import { validateEmail, validateRequired, validateMinLength } from '../../utils/validators';
+import { useAuth } from '../../hooks/useAuth';
+import { validateEmail, validatePassword } from '../../utils/validators';
 
 interface RegisterFormProps {
   onSuccess: () => void;
@@ -14,45 +14,45 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    name: '',
+    first_name: '',
+    last_name: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const nameError = validateRequired(formData.name, 'Name');
-    if (nameError) {
-      setError(nameError);
-      return;
-    }
     const emailError = validateEmail(formData.email);
-    if (emailError) {
+    if (emailError !== null) {
       setError(emailError);
       return;
     }
-    const passwordError = validateMinLength(formData.password, 8, 'Password');
-    if (passwordError) {
+
+    const passwordError = validatePassword(formData.password);
+    if (passwordError !== null) {
       setError(passwordError);
       return;
     }
+
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('Passwords do not match.');
       return;
     }
 
     setIsLoading(true);
+
     try {
       await register({
         email: formData.email,
         password: formData.password,
-        name: formData.name,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
       });
       onSuccess();
     } catch (err: unknown) {
@@ -68,36 +68,50 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess }) => {
       {error && (
         <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>
       )}
-      <Input
-        label="Name"
-        value={formData.name}
-        onChange={handleChange('name')}
-        placeholder="John Doe"
-        required
-      />
+      <div className="grid grid-cols-2 gap-4">
+        <Input
+          label="First Name"
+          name="first_name"
+          value={formData.first_name}
+          onChange={handleChange}
+          required
+          placeholder="John"
+        />
+        <Input
+          label="Last Name"
+          name="last_name"
+          value={formData.last_name}
+          onChange={handleChange}
+          required
+          placeholder="Doe"
+        />
+      </div>
       <Input
         label="Email"
         type="email"
+        name="email"
         value={formData.email}
-        onChange={handleChange('email')}
-        placeholder="you@example.com"
+        onChange={handleChange}
         required
+        placeholder="you@example.com"
       />
       <Input
         label="Password"
         type="password"
+        name="password"
         value={formData.password}
-        onChange={handleChange('password')}
-        placeholder="••••••••"
+        onChange={handleChange}
         required
+        placeholder="••••••••"
       />
       <Input
         label="Confirm Password"
         type="password"
+        name="confirmPassword"
         value={formData.confirmPassword}
-        onChange={handleChange('confirmPassword')}
-        placeholder="••••••••"
+        onChange={handleChange}
         required
+        placeholder="••••••••"
       />
       <Button type="submit" isLoading={isLoading} className="w-full">
         Create Account

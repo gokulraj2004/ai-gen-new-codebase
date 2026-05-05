@@ -1,60 +1,28 @@
-/**
- * EXAMPLE HOOK - Demonstrates React Query patterns.
- * DELETE this file and create your own domain hooks.
- */
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { itemsApi, type ItemsQueryParams } from '../api/items';
-import type { ItemCreateRequest, ItemUpdateRequest } from '../types';
+import { useQuery } from '@tanstack/react-query';
+import apiClient from '../api/client';
+import type { Item, PaginatedResponse } from '../types';
 
-export const useItems = (params: ItemsQueryParams = {}) => {
-  return useQuery({
-    queryKey: ['items', params],
-    queryFn: () => itemsApi.getItems(params),
+export type { Item };
+
+export function useItems(page = 1, pageSize = 20) {
+  return useQuery<PaginatedResponse<Item>>({
+    queryKey: ['items', page, pageSize],
+    queryFn: async () => {
+      const response = await apiClient.get<PaginatedResponse<Item>>('/items', {
+        params: { page, page_size: pageSize },
+      });
+      return response.data;
+    },
   });
-};
+}
 
-export const useItem = (id: string) => {
-  return useQuery({
-    queryKey: ['items', id],
-    queryFn: () => itemsApi.getItem(id),
+export function useItem(id: string) {
+  return useQuery<Item>({
+    queryKey: ['item', id],
+    queryFn: async () => {
+      const response = await apiClient.get<Item>(`/items/${id}`);
+      return response.data;
+    },
     enabled: !!id,
   });
-};
-
-export const useCreateItem = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: ItemCreateRequest) => itemsApi.createItem(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['items'] });
-    },
-  });
-};
-
-export const useUpdateItem = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: ItemUpdateRequest }) =>
-      itemsApi.updateItem(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['items'] });
-    },
-  });
-};
-
-export const useDeleteItem = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => itemsApi.deleteItem(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['items'] });
-    },
-  });
-};
-
-export const useTags = () => {
-  return useQuery({
-    queryKey: ['tags'],
-    queryFn: () => itemsApi.getTags(),
-  });
-};
+}

@@ -9,7 +9,7 @@ from alembic import context
 
 from app.config import settings
 from app.database import Base
-from app.models import user, item, tag, token_blocklist  # noqa: F401 - import models to register them
+import app.models  # noqa: F401 - import models for metadata
 
 config = context.config
 

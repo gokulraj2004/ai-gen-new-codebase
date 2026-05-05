@@ -35,103 +35,97 @@
     ],
     "github_repository": "new-codebase"
   },
-  "quality_score": 83.1,
+  "quality_score": 83.0,
   "passed": true,
-  "files_created": 99,
+  "files_created": 91,
   "token_usage": {
-    "total_input_tokens": 399260,
-    "total_output_tokens": 83643,
-    "total_tokens": 482903,
-    "api_calls": 14,
+    "total_input_tokens": 352644,
+    "total_output_tokens": 81108,
+    "total_tokens": 433752,
+    "api_calls": 13,
     "calls": [
       {
         "agent": "generator",
         "input_tokens": 9385,
-        "output_tokens": 15999,
-        "duration_seconds": 131.73
-      },
-      {
-        "agent": "reviewer",
-        "input_tokens": 23999,
-        "output_tokens": 2195,
-        "duration_seconds": 34.49
-      },
-      {
-        "agent": "security",
-        "input_tokens": 16370,
-        "output_tokens": 1949,
-        "duration_seconds": 35.6
-      },
-      {
-        "agent": "fixer",
-        "input_tokens": 4433,
         "output_tokens": 16000,
-        "duration_seconds": 127.58
-      },
-      {
-        "agent": "security",
-        "input_tokens": 30902,
-        "output_tokens": 2067,
-        "duration_seconds": 37.98
-      },
-      {
-        "agent": "reviewer",
-        "input_tokens": 38531,
-        "output_tokens": 4000,
-        "duration_seconds": 64.1
-      },
-      {
-        "agent": "fixer",
-        "input_tokens": 6077,
-        "output_tokens": 1421,
-        "duration_seconds": 13.47
-      },
-      {
-        "agent": "security",
-        "input_tokens": 31244,
-        "output_tokens": 2006,
-        "duration_seconds": 36.09
-      },
-      {
-        "agent": "reviewer",
-        "input_tokens": 38873,
-        "output_tokens": 4000,
-        "duration_seconds": 63.4
-      },
-      {
-        "agent": "evaluator",
-        "input_tokens": 38885,
-        "output_tokens": 650,
-        "duration_seconds": 16.88
-      },
-      {
-        "agent": "fixer",
-        "input_tokens": 31693,
-        "output_tokens": 15999,
         "duration_seconds": 133.83
       },
       {
-        "agent": "evaluator",
-        "input_tokens": 45136,
-        "output_tokens": 688,
-        "duration_seconds": 17.78
+        "agent": "reviewer",
+        "input_tokens": 24144,
+        "output_tokens": 2077,
+        "duration_seconds": 31.01
+      },
+      {
+        "agent": "security",
+        "input_tokens": 16515,
+        "output_tokens": 1869,
+        "duration_seconds": 34.32
       },
       {
         "agent": "fixer",
-        "input_tokens": 37812,
+        "input_tokens": 4099,
         "output_tokens": 16000,
-        "duration_seconds": 135.81
+        "duration_seconds": 128.47
+      },
+      {
+        "agent": "security",
+        "input_tokens": 29763,
+        "output_tokens": 2295,
+        "duration_seconds": 41.41
+      },
+      {
+        "agent": "reviewer",
+        "input_tokens": 37392,
+        "output_tokens": 3241,
+        "duration_seconds": 55.83
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 16245,
+        "output_tokens": 16000,
+        "duration_seconds": 133.1
+      },
+      {
+        "agent": "security",
+        "input_tokens": 34444,
+        "output_tokens": 2219,
+        "duration_seconds": 40.55
+      },
+      {
+        "agent": "reviewer",
+        "input_tokens": 42073,
+        "output_tokens": 3344,
+        "duration_seconds": 59.62
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 16769,
+        "output_tokens": 10665,
+        "duration_seconds": 94.02
       },
       {
         "agent": "evaluator",
-        "input_tokens": 45920,
-        "output_tokens": 669,
-        "duration_seconds": 17.5
+        "input_tokens": 43092,
+        "output_tokens": 635,
+        "duration_seconds": 16.87
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 35681,
+        "output_tokens": 6091,
+        "duration_seconds": 60.79
+      },
+      {
+        "agent": "evaluator",
+        "input_tokens": 43042,
+        "output_tokens": 672,
+        "duration_seconds": 16.52
       }
     ]
   },
-  "duration_seconds": 757.86,
-  "created_at": "2026-05-05T07:04:29.510536+00:00",
+  "duration_seconds": 733.53,
+  "created_at": "2026-05-05T07:06:31.217466+00:00",
   "enhancements": {
     "parallel_review": true,
     "chunked_generation": false,

@@ -1,20 +1,9 @@
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
-from app.schemas.item import ItemCreate, ItemResponse, ItemUpdate
-from app.schemas.tag import TagCreate, TagResponse
-from app.schemas.auth import Token, TokenData, LoginRequest, RefreshTokenRequest, LogoutRequest
+from app.schemas.user import UserCreate, UserUpdate, UserResponse, UserLogin
+from app.schemas.item import ItemCreate, ItemUpdate, ItemResponse, PaginatedItemResponse
+from app.schemas.token import Token, TokenPayload
 
 __all__ = [
-    "UserCreate",
-    "UserResponse",
-    "UserUpdate",
-    "ItemCreate",
-    "ItemResponse",
-    "ItemUpdate",
-    "TagCreate",
-    "TagResponse",
-    "Token",
-    "TokenData",
-    "LoginRequest",
-    "RefreshTokenRequest",
-    "LogoutRequest",
+    "UserCreate", "UserUpdate", "UserResponse", "UserLogin",
+    "ItemCreate", "ItemUpdate", "ItemResponse", "PaginatedItemResponse",
+    "Token", "TokenPayload",
 ]

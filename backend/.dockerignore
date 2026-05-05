@@ -4,15 +4,9 @@ __pycache__/
 .env
 .env.local
 .git/
-.gitignore
-*.md
 .vscode/
 .idea/
-.pytest_cache/
-.coverage
-htmlcov/
+*.md
 venv/
 .venv/
-*.egg-info/
-dist/
-build/
+alembic/versions/*.pyc

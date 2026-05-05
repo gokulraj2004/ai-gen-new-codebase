@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
-import { validateEmail, validateRequired } from '../../utils/validators';
+import { useAuth } from '../../hooks/useAuth';
 
 interface LoginFormProps {
   onSuccess: () => void;
@@ -18,19 +17,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    const emailError = validateEmail(email);
-    if (emailError) {
-      setError(emailError);
-      return;
-    }
-    const passwordError = validateRequired(password, 'Password');
-    if (passwordError) {
-      setError(passwordError);
-      return;
-    }
-
     setIsLoading(true);
+
     try {
       await login({ email, password });
       onSuccess();
@@ -52,16 +40,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@example.com"
         required
+        placeholder="you@example.com"
       />
       <Input
         label="Password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="••••••••"
         required
+        placeholder="••••••••"
       />
       <Button type="submit" isLoading={isLoading} className="w-full">
         Sign In

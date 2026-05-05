@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/');
+    navigate('/login');
   };
 
   return (
@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
                 to="/profile"
                 className="text-sm font-medium text-gray-600 hover:text-gray-900"
               >
-                {user?.name}
+                {user?.first_name} {user?.last_name}
               </Link>
               <button onClick={handleLogout} className="btn-secondary text-sm">
                 Logout

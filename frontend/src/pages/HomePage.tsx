@@ -1,13 +1,14 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const HomePage = () => {
+export const HomePage: React.FC = () => {
   return (
-    <div className="text-center py-12">
+    <div className="text-center py-16">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">
         Welcome to New Codebase
       </h1>
       <p className="text-lg text-gray-600 mb-8">
-        A full-stack application built with React and FastAPI.
+        A modern full-stack application built with React and FastAPI.
       </p>
       <div className="flex justify-center space-x-4">
         <Link

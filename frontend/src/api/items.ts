@@ -1,51 +1,37 @@
-/**
- * EXAMPLE API CALLS - Demonstrates API integration patterns.
- * DELETE this file and create your own domain API calls.
- */
-import { apiClient } from './client';
-import type { Item, ItemCreateRequest, ItemUpdateRequest, Tag } from '../types';
-import type { PaginatedResponse } from '../types/api';
+import apiClient from './client';
+import type { Item, PaginatedResponse } from '../types';
 
-export interface ItemsQueryParams {
+export interface ListItemsParams {
   page?: number;
   page_size?: number;
   search?: string;
-  tags?: string[];
-  sort_by?: 'title_asc' | 'title_desc' | 'created_at_desc';
+  tag?: string;
+  sort_by?: string;
+  sort_order?: string;
 }
 
 export const itemsApi = {
-  getItems: async (params: ItemsQueryParams = {}): Promise<PaginatedResponse<Item>> => {
+  list: async (params?: ListItemsParams): Promise<PaginatedResponse<Item>> => {
     const response = await apiClient.get<PaginatedResponse<Item>>('/items', { params });
     return response.data;
   },
 
-  getItem: async (id: string): Promise<Item> => {
+  get: async (id: string): Promise<Item> => {
     const response = await apiClient.get<Item>(`/items/${id}`);
     return response.data;
   },
 
-  createItem: async (data: ItemCreateRequest): Promise<Item> => {
+  create: async (data: { title: string; description?: string; tags?: string[] }): Promise<Item> => {
     const response = await apiClient.post<Item>('/items', data);
     return response.data;
   },
 
-  updateItem: async (id: string, data: ItemUpdateRequest): Promise<Item> => {
+  update: async (id: string, data: { title?: string; description?: string; tags?: string[] }): Promise<Item> => {
     const response = await apiClient.put<Item>(`/items/${id}`, data);
     return response.data;
   },
 
-  deleteItem: async (id: string): Promise<void> => {
+  delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/items/${id}`);
-  },
-
-  getTags: async (): Promise<{ tags: Tag[] }> => {
-    const response = await apiClient.get<{ tags: Tag[] }>('/tags');
-    return response.data;
-  },
-
-  createTag: async (name: string): Promise<Tag> => {
-    const response = await apiClient.post<Tag>('/tags', { name });
-    return response.data;
   },
 };

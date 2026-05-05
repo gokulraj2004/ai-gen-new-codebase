@@ -38,7 +38,7 @@ docker-compose up --build
 
 ## Environment Variables
 
-See `.env.example` for all available configuration options with descriptions.
+See `.env.example` for all required environment variables with descriptions.
 
 ## API Documentation
 
@@ -52,7 +52,7 @@ Once the backend is running, visit:
 new-codebase/
 ├── frontend/          # React TypeScript SPA
 │   ├── src/
-│   │   ├── api/       # API client and endpoint functions
+│   │   ├── api/       # API client and endpoint calls
 │   │   ├── components/ # Reusable UI and feature components
 │   │   ├── context/   # React context providers
 │   │   ├── hooks/     # Custom React hooks
@@ -63,7 +63,7 @@ new-codebase/
 │   └── ...
 ├── backend/           # FastAPI Python application
 │   ├── app/
-│   │   ├── api/       # Route handlers
+│   │   ├── api/       # API route handlers
 │   │   ├── core/      # Security, exceptions, pagination
 │   │   ├── middleware/ # CORS and other middleware
 │   │   ├── models/    # SQLAlchemy ORM models
@@ -121,7 +121,7 @@ npx vitest run
 cd backend
 
 # Create a new migration
-alembic revision --autogenerate -m "description of changes"
+alembic revision --autogenerate -m "description"
 
 # Apply migrations
 alembic upgrade head
@@ -135,7 +135,8 @@ alembic downgrade -1
 The project includes a GitHub Actions CI/CD pipeline (`.github/workflows/ci-cd.yml`) that:
 
 1. **Lints and tests** both frontend and backend on every push/PR
-2. **Builds Docker images** and pushes to GitHub Container Registry on merge to `main`
+2. **Builds Docker images** and pushes to GitHub Container Registry on `main` branch
+3. Can be extended with a deploy step for your infrastructure
 
 ## License
 

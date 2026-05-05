@@ -31,11 +31,11 @@ export const Toast: React.FC<ToastProps> = ({
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-5">
       <div className={`rounded-lg border p-4 shadow-lg ${typeClasses[type]}`}>
         <div className="flex items-center gap-3">
           <p className="text-sm font-medium">{message}</p>
-          <button onClick={onClose} className="text-current opacity-70 hover:opacity-100">
+          <button onClick={onClose} className="ml-2 opacity-70 hover:opacity-100">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>

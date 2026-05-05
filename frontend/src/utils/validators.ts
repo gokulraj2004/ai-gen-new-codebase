@@ -1,31 +1,44 @@
-export const validateEmail = (email: string): string | null => {
+/**
+ * Validates an email address.
+ * Returns an error message string if invalid, or null if valid.
+ */
+export function validateEmail(email: string): string | null {
   if (!email) {
     return 'Email is required';
   }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return 'Please enter a valid email address';
   }
-  return null;
-};
 
-export const validateRequired = (value: string, fieldName: string): string | null => {
-  if (!value || value.trim().length === 0) {
-    return `${fieldName} is required`;
-  }
   return null;
-};
+}
 
-export const validateMinLength = (
-  value: string,
-  minLength: number,
-  fieldName: string
-): string | null => {
-  if (!value) {
-    return `${fieldName} is required`;
+/**
+ * Validates a password.
+ * Returns an error message string if invalid, or null if valid.
+ */
+export function validatePassword(password: string): string | null {
+  if (!password) {
+    return 'Password is required';
   }
-  if (value.length < minLength) {
-    return `${fieldName} must be at least ${minLength} characters`;
+
+  if (password.length < 8) {
+    return 'Password must be at least 8 characters long';
   }
+
+  if (!/[A-Z]/.test(password)) {
+    return 'Password must contain at least one uppercase letter';
+  }
+
+  if (!/[a-z]/.test(password)) {
+    return 'Password must contain at least one lowercase letter';
+  }
+
+  if (!/[0-9]/.test(password)) {
+    return 'Password must contain at least one number';
+  }
+
   return null;
-};
+}
