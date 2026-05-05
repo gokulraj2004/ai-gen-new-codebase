@@ -1,0 +1,142 @@
+{
+  "project_name": "New Codebase",
+  "tech_stack": {
+    "project_name": "New Codebase",
+    "frontend": {
+      "framework": "React",
+      "language": "TypeScript",
+      "styling": "TailwindCSS",
+      "package_manager": "npm"
+    },
+    "backend": {
+      "framework": "FastAPI",
+      "language": "Python",
+      "orm": "SQLAlchemy"
+    },
+    "database": {
+      "db_type": "PostgreSQL",
+      "version": "15"
+    },
+    "features": [
+      "Authentication (JWT)",
+      "Docker support (Dockerfile + docker-compose)",
+      "CI/CD (GitHub Actions)",
+      "README with setup instructions",
+      "Environment variables (.env.example)"
+    ],
+    "architecture_type": "monolithic",
+    "service_connection_urls": [
+      "test"
+    ],
+    "environments": [
+      "development",
+      "staging",
+      "production"
+    ],
+    "github_repository": "new-codebase"
+  },
+  "quality_score": 83.1,
+  "passed": true,
+  "files_created": 99,
+  "token_usage": {
+    "total_input_tokens": 399260,
+    "total_output_tokens": 83643,
+    "total_tokens": 482903,
+    "api_calls": 14,
+    "calls": [
+      {
+        "agent": "generator",
+        "input_tokens": 9385,
+        "output_tokens": 15999,
+        "duration_seconds": 131.73
+      },
+      {
+        "agent": "reviewer",
+        "input_tokens": 23999,
+        "output_tokens": 2195,
+        "duration_seconds": 34.49
+      },
+      {
+        "agent": "security",
+        "input_tokens": 16370,
+        "output_tokens": 1949,
+        "duration_seconds": 35.6
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 4433,
+        "output_tokens": 16000,
+        "duration_seconds": 127.58
+      },
+      {
+        "agent": "security",
+        "input_tokens": 30902,
+        "output_tokens": 2067,
+        "duration_seconds": 37.98
+      },
+      {
+        "agent": "reviewer",
+        "input_tokens": 38531,
+        "output_tokens": 4000,
+        "duration_seconds": 64.1
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 6077,
+        "output_tokens": 1421,
+        "duration_seconds": 13.47
+      },
+      {
+        "agent": "security",
+        "input_tokens": 31244,
+        "output_tokens": 2006,
+        "duration_seconds": 36.09
+      },
+      {
+        "agent": "reviewer",
+        "input_tokens": 38873,
+        "output_tokens": 4000,
+        "duration_seconds": 63.4
+      },
+      {
+        "agent": "evaluator",
+        "input_tokens": 38885,
+        "output_tokens": 650,
+        "duration_seconds": 16.88
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 31693,
+        "output_tokens": 15999,
+        "duration_seconds": 133.83
+      },
+      {
+        "agent": "evaluator",
+        "input_tokens": 45136,
+        "output_tokens": 688,
+        "duration_seconds": 17.78
+      },
+      {
+        "agent": "fixer",
+        "input_tokens": 37812,
+        "output_tokens": 16000,
+        "duration_seconds": 135.81
+      },
+      {
+        "agent": "evaluator",
+        "input_tokens": 45920,
+        "output_tokens": 669,
+        "duration_seconds": 17.5
+      }
+    ]
+  },
+  "duration_seconds": 757.86,
+  "created_at": "2026-05-05T07:04:29.510536+00:00",
+  "enhancements": {
+    "parallel_review": true,
+    "chunked_generation": false,
+    "checkpointing": true,
+    "incremental_fixing": true,
+    "validator": true
+  }
+}
